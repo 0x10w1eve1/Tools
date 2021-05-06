@@ -1,5 +1,5 @@
 import sys
-# wrote this to remove duplciates after directory scanning.
+# remove all duplicates from 1 file, and write new file with no duplicates. 
 if len(sys.argv) != 3:
 	print 'Usage: %s <infile> <outfile>' %sys.argv[0]
 	sys.exit()

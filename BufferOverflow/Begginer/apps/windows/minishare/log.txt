@@ -1,5 +1,0 @@
-Sun Dec 02 23:37:59 2018 (0) Server started (MiniShare 1.4.1).
-Sun Dec 02 23:38:24 2018 (1) Connect from 192.168.1.8
-Sun Dec 02 23:38:52 2018 (1) 400 Bad request
-Sun Dec 02 23:38:52 2018 (1) Total 303 bytes sent.
-Sun Dec 02 23:38:52 2018 (1) Connection closed.
