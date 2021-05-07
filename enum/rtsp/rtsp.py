@@ -9,3 +9,6 @@ s.connect((ip,port))
 s.send(req)
 data=s.recv(1024)
 print data
+
+
+### 0x10w1eve1 ###

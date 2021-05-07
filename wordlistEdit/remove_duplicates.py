@@ -26,3 +26,6 @@ print '[!] Complete.'
 print '[+] Original file size: ' + str(inwc) + '\n'
 print '[+] New file size: ' + str(outwc)
 
+
+
+### 0x10w1eve1 ###

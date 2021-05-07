@@ -20,3 +20,6 @@ for w in dik.readlines():
 		print 'Found Word. Word Count= %s'%wc
 
 
+
+
+### 0x10w1eve1 ###

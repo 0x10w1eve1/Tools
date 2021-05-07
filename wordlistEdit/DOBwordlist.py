@@ -37,3 +37,6 @@ for i in perms2:
 with open('sviridovdob','w') as f:
 	for i in newlist:
 		f.write(i+'\n')
+
+
+### 0x10w1eve1 ###

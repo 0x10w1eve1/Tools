@@ -19,3 +19,6 @@ method = (sys.argv[2]).upper()
 #proxy = urllib3.ProxyManager("http://127.0.0.1:8080/")
 stream = urllib3.PoolManager()
 exploit(stream,method,url)
+
+
+### 0x10w1eve1 ###

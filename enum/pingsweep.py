@@ -23,3 +23,6 @@ for ip in network:
 			seq=reply.getlayer(ICMP).seq
 			ttl=reply.getlayer(IP).ttl
 			print "[+] Host %s is responding to ICMP packets"%ip
+
+
+### 0x10w1eve1 ###
