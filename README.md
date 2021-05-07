@@ -1,8 +1,8 @@
 # Tools
 
-Some programs that help me daily.  
+Some programs i wrote that help me daily.  
 
-**Exploits:** 
+**Exploits:** * *(little disclaimer, i did not discover any of exploits, i wrote these based off the cve writeups which can be easily found on google)* *
   * Buffer Overflow helper scripts
   * non-seh stack based buffer overflow poc's for crossfire game,ability server, freefloat, minishare, and savant. 
   * webdav poc
