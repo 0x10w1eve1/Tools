@@ -4,6 +4,13 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import sys
 
 
+##### TO DO #######
+# 1) add recursive scanning from found dirs, maybe do permuations of all found dirs
+# 2) parse all wordlists to get files without default extension, and add own extension based on needs
+# 3) MultiThread it all, if wordlists > 50k
+# 4) send results to file after like 10k through wordlist, or 20 min, whichever comes first, so incase you have to cut it short you have something.
+
+
 Usage = " ### 0x10w1evee1 ### \nUsage: %s <target> <wordlist> <outfile>\n\ttarget = protocol://site \n"%sys.argv[0]
 if len(sys.argv) !=4:
 	print Usage
@@ -80,7 +87,8 @@ for dirr in dirlist:
 	resp=requests.get(target+dirr.strip(),headers=OPTIONAL_HEADERS,verify=False,proxies=proxy,allow_redirects=False)
 
 	#response sorting logic
-	if resp.status_code == 404 or resp.status_code == 302:
+
+	if resp.status_code == 404 or resp.status_code == 302: # some IIS pages will give a 302 moved if you're not authed, not a good indicator, i usually play with these later
 		notfound.append(dirr + '::: status:%s'%resp.status_code)
 	elif resp.status_code == 200:
 		if failCase in resp.content:
