@@ -96,7 +96,7 @@ for dirr in dirlist:
 		else:
 			foundDirs.append(dirr)
 	else:
-		checkme.append(dirr)
+		checkme.append(dirr + " ::: status %s"%resp.status_code)
 
 
 	wc+=1 #increment curr count
