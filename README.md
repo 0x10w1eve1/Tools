@@ -1,6 +1,6 @@
 # Tools
 
-Some of the programs I wrote while learning different concepts/techniques. 
+Some of the programs I wrote during engagements. I will add new stuff here too.  
 
 **Exploits:** * * (I did not discover any of these exploits, i wrote them based off the cve writeups/tutorials) * *
   * Buffer Overflow helper scripts
@@ -10,7 +10,7 @@ Some of the programs I wrote while learning different concepts/techniques.
 **crackoders:**: password cracking and decoding scripts
 
 
-**enum: scripts:** to enumerate various protocols
+**enum: scripts:** http Directory scanner, login bruteforce, webdav, rtsp, smtp..etc 
 
 **wordlistEdit:** scripts for wordlist generation and file searches/manipulation
 	
