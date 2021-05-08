@@ -4,14 +4,17 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import sys
 
 
-Usage = " ### 0x10w1evee1 ### \n Directory scanner for pages with a custom 404 page giving a http 200 \n\n Usage: %s <target> <wordlist>\n\ttarget = protocol://site \n"%sys.argv[0]
-if len(sys.argv) !=3:
+Usage = " ### 0x10w1evee1 ### \nUsage: %s <target> <wordlist> <outfile>\n\ttarget = protocol://site \n"%sys.argv[0]
+if len(sys.argv) !=4:
 	print Usage
 	sys.exit()
 
+target=sys.argv[1]+"/"
+dirlist=open(sys.argv[2],'r')
+outfile=sys.argv[3]
 		
 def write_results(foundDirs,notfound,checkme,falsepositive):
-	logfile = open('Dirscan_results','w')
+	logfile = open(outfile,'w')
 	logfile.write('[0x31 0x30 0x77 0x31 0x65 0x76 0x65 0x31]\n\n')
 	logfile.write('~~~~~~~~~~~~~~ These Exist ~~~~~~~~~~~~~~\n\n')
 	if foundDirs:
@@ -56,8 +59,7 @@ OPTIONAL_HEADERS={
 }
 ### 
 
-target=sys.argv[1]+"/"
-dirlist=open(sys.argv[2],'r')
+
 wc=0
 wct=0
 checkme=[]
