@@ -9,7 +9,7 @@ import sys
 # 2) parse all wordlists to get files without default extension, and add own extension based on needs
 # 3) MultiThread it all, if wordlists > 50k
 # 4) send results to file after like 10k through wordlist, or 20 min, whichever comes first, so incase you have to cut it short you have something.
-
+# 5) Add POST scanning (change request headers,body, and you need to do #2 on the list first) 
 
 Usage = " ### 0x10w1evee1 ### \nUsage: %s <target> <wordlist> <outfile>\n\ttarget = protocol://site \n"%sys.argv[0]
 if len(sys.argv) !=4:
@@ -81,7 +81,7 @@ for i in dirlist:
 	wct+=1
 dirlist.seek(0)
 
-
+print '[**** Staring scan with GET ****'
 for dirr in dirlist:
 	print '[*] Trying dirs %s/%s'%(wc,wct) # display curr/total count
 	resp=requests.get(target+dirr.strip(),headers=OPTIONAL_HEADERS,verify=False,proxies=proxy,allow_redirects=False)
