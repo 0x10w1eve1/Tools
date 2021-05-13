@@ -16,7 +16,7 @@ if len(sys.argv) !=4:
 	print Usage
 	sys.exit()
 
-target=sys.argv[1]+"/"
+target=sys.argv[1]+"/web/"
 #all_targets=['Home','Content','']
 dirlist=open(sys.argv[2],'r')
 outfile=sys.argv[3]
@@ -76,11 +76,12 @@ def write_results(foundDirs,notfound,checkme,falsepositive):
 
 ### CHANGE these vars accordingly
 
+Cookie=''
 failCase='404 Error'
 proxy = {"https":"http://127.0.0.1:8080"}
 OPTIONAL_HEADERS={
 	'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0',
-	'Cookie':''
+	'Cookie':'%s'%Cookie
 }
 ### 
 
