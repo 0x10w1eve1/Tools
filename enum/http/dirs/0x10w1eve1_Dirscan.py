@@ -17,12 +17,28 @@ if len(sys.argv) !=4:
 	sys.exit()
 
 target=sys.argv[1]+"/"
+#all_targets=['Home','Content','']
 dirlist=open(sys.argv[2],'r')
 outfile=sys.argv[3]
-		
+wc=0
+wct=0
+checkme=[]
+foundDirs=[]
+notfound=[]
+falsepositive=[]
+separator='~'*40+'\n\n\n'
+
+logfile=open(outfile,'w')
+logfile.write('[0x31 0x30 0x77 0x31 0x65 0x76 0x65 0x31]\n\n')
+logfile.write(' # 0x10w1evee1 # Showing results for the below options:\n')
+logfile.write('Target: %s  |  Wordlist: %s  | Outfile: %s \n\n'%(target,sys.argv[2],outfile))
+logfile.write(separator)
+#logfile.seek(0)
+logfile.close() #didnt want to keep the file open for loong scans. not sure if this is better than opening twice. maybe just seek it back and keep writing.
+
+
 def write_results(foundDirs,notfound,checkme,falsepositive):
-	logfile = open(outfile,'w')
-	logfile.write('[0x31 0x30 0x77 0x31 0x65 0x76 0x65 0x31]\n\n')
+	logfile = open(outfile,'a')
 	logfile.write('~~~~~~~~~~~~~~ These Exist ~~~~~~~~~~~~~~\n\n')
 	if foundDirs:
 		for i in foundDirs:
@@ -53,7 +69,8 @@ def write_results(foundDirs,notfound,checkme,falsepositive):
 	else:
 		logfile.write('None\n')
 	logfile.write(separator)
-	logfile.write('\n[0x31 0x30 0x77 0x31 0x65 0x76 0x65 0x31]\n\n')	
+	logfile.write('\n[0x31 0x30 0x77 0x31 0x65 0x76 0x65 0x31]\n\n')
+	logfile.close()	
 
 
 
@@ -62,18 +79,10 @@ def write_results(foundDirs,notfound,checkme,falsepositive):
 failCase='404 Error'
 proxy = {"https":"http://127.0.0.1:8080"}
 OPTIONAL_HEADERS={
-	'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0'
+	'User-Agent':'Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0',
+	'Cookie':''
 }
 ### 
-
-
-wc=0
-wct=0
-checkme=[]
-foundDirs=[]
-notfound=[]
-falsepositive=[]
-separator='~'*40+'\n\n\n'
 
 
 #get total words in list
