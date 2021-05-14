@@ -1,6 +1,7 @@
 # Tools
 
-Some of the programs I wrote during engagements. I will add new stuff here too.  
+Some of the programs I wrote during engagements. I will add new stuff here too.
+_unless the code has a python3 shebang, it was written for python2_
 
 **Exploits:** *(I did not discover any of these exploits, i wrote them based off the cve writeups/tutorials) *
   * Buffer Overflow helper scripts
