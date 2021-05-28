@@ -1,9 +1,6 @@
 # Tools
 
-These are some programs I wrote during OSCP training and engagements for work. I use most of these on a daily basis so perhaps they will help you too!
-
-I am currently working on several scripts _(see Ongoing section below)_ and will be updating this repo with any changes. 
-
+These are some scripts I wrote during OSCP training and other stuff.  
 
 **Exploits:** _(I did not discover any of these exploits, I wrote them based off the cve writeups/tutorials)_
   * Buffer Overflow helper scripts
