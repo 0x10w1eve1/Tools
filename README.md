@@ -24,6 +24,6 @@ _Extract all words in pdf/doc file and create a wordlist for bruteforcing/enumer
 ### **_Note_**
 
 **_Exploits/webdav/10w1eve1_webdav_poc.py_** 
-_tried to use this recently and couldnt get urllib3 to work with https. Im planning to change this to import requests instead of urllib3. Just not sure when i'll get to it but you can get the script to work by using a requests object (Instead of requests.Post() use requests.request("PROPFIND"))_
+_tried to use this recently and couldnt get urllib3 to work with https. Im planning to change this to import requests instead of urllib3. Just not sure when i'll get to it but you can get the script to work by using a requests object (Instead of requests.Post() use requests.request("http_method"))_
 						
 
