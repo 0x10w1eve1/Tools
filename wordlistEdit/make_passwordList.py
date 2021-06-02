@@ -2,9 +2,9 @@ from itertools import permutations
 import sys
 import itertools
 
-password='password'
-keyword='otrs'
-numbers='123'
+password=''
+keyword=''
+numbers=''
 simple=[]
 
 

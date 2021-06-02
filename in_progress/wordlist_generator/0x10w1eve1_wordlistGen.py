@@ -9,7 +9,11 @@ TO DO:
 2) requitements.txt for packages
 3) parse argparse infile to see filetype, if not filetype asssume its .txt. show this default in usage
 4) depending on filetype from above, call prinpdfmeta.py or docx. maybe just put it all in this script. make it classY
+<<<<<<< HEAD
 5) for docx either use this:https://github.com/badbye/docxpy or modify your assessments logic to include headers and tables, make a test docx file to make sure you get all text from a table, header etc. 
+=======
+5) for docx either use this:https://github.com/badbye/docxpy or modify your word doc parser logic to include headers and tables, make a test docx file to make sure you get all text from a table, header etc. 
+>>>>>>> fb2867c80b380f3895850ab896a55106bace510d
 6) go through all scripts in git/wordlistedit and see if you can incorporate/use anything. 
 
 import PyPDF2
