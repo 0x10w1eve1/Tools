@@ -1,8 +1,8 @@
 # Tools
 
-Some scripts i wrote or modified during OSCP training and engagements for work. 
+Hello, these are some of the programs I wrote during my OSCP training _(spoilers removed)_ and work-related engagements. There is nothing crazy here, mainly scripts to automate pen testing techniques. _If my non-existent comments are not clear enough, please fee free to reach out with any questions !_
 
-**Exploits:** _(I did not discover any of these exploits, I wrote them based off the cve writeups/tutorials)_
+**Exploit Writing (begginer):** _(cve's and original poc's can be found online)_
   * Buffer Overflow helper scripts
   * non-seh stack based buffer overflow poc's for crossfire, ability server, freefloat, minishare, and savant. 
   * webdav exploit poc
