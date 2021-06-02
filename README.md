@@ -1,4 +1,4 @@
-# Tools
+## Tools
 
 Some scripts i wrote or modified during OSCP training and engagements for work. 
 
@@ -14,7 +14,7 @@ Some scripts i wrote or modified during OSCP training and engagements for work.
 **wordlistEdit:** scripts for wordlist generation and file parsing	
 
 
-### **In Progress**: 
+# **In Progress**: 
 
 1) **0x10w1eve1_Dirscan.py**
 _Recently came across a site that had a custom 404 message giving 200's, couldn't figure out how to do it in dirbuster/gobuster so i wrote this. I plan to add functionality to it as well_
