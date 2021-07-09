@@ -1,6 +1,6 @@
 # Tools
 
-Hello, these are some of the programs I wrote during my OSCP training _(spoilers removed)_ and work-related engagements. There is nothing crazy here, mainly scripts to automate pen testing techniques. _If my non-existent comments are not clear enough, please fee free to reach out with any questions !_
+Hello, these are some of the "public-safe" programs I wrote during my OSCP training _(spoilers removed)_ and work-related engagements. There is nothing crazy here, mainly scripts to automate pen testing techniques. _If my non-existent comments are not clear enough, please fee free to reach out with any questions !_
 
 **Exploit Writing (begginer):** _(cve's and original poc's can be found online)_
   * Buffer Overflow helper scripts

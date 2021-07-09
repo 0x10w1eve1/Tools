@@ -1,6 +1,6 @@
-import sys
-
-
+#!/usr/bin/env python3
+######
+###
 '''
 
 TO DO: 
@@ -15,9 +15,12 @@ TO DO:
 5) for docx either use this:https://github.com/badbye/docxpy or modify your word doc parser logic to include headers and tables, make a test docx file to make sure you get all text from a table, header etc. 
 >>>>>>> fb2867c80b380f3895850ab896a55106bace510d
 6) go through all scripts in git/wordlistedit and see if you can incorporate/use anything. 
+######
+####
+'''
 
 import PyPDF2
-
+import sys
 import argparse
 
 
@@ -38,29 +41,30 @@ def getWords(parser):
 	return text
 
 	
-def main():
-	myparser = argparse.ArgumentParser(usage='python printmeta.py -F <filename>')
-	myparser.add_argument('-F',dest='file',help='specify filename')
-	myargs = myparser.parse_args()
-	if myargs.file == None:
-		print(myparser.usage)
-	else:
-		mypdf=open(myargs.file,'rb')
-		parser = PyPDF2.PdfFileReader(mypdf)
-		words=getWords(parser)
 
 
 
 
-		
-if __name__ == '__main__':
-	main()
+myparser = argparse.ArgumentParser()
+myparser.add_argument('infile',help='file to parse')
+myparser.add_argument('outfile', metavar="outfile", default="10w1eve1_wordlist.txt", help='new wordlist filename')
+myparser.add_argument('-x', metavar="ext",choices=['pdf','txt','doc','html','xml'], help='extension of input file, if cannot detect, txt') 
 
+myparser.parse_args()
 
+if not myargs.infile:
+	print(myparser.print_help())
+	parser.exit()
+else:
+	pass
 
 
 '''
 
+
+		mypdf=open(myargs.file,'rb')
+		parser = PyPDF2.PdfFileReader(mypdf)
+		words=getWords(parser)
 
 
 Usage = " ### 0x10w1evee1 ### \nUsage: %s infile outfile "%sys.argv[0]
@@ -84,3 +88,4 @@ with open(sys.argv[1],'rb') as email:
 
 
 ### 0x10w1eve1 ###
+'''
