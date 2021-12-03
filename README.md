@@ -6,6 +6,7 @@ Hello, these are some of programs I wrote during my OSCP training _(spoilers rem
   * Buffer Overflow helper scripts
   * non-seh stack based buffer overflow poc's for crossfire, ability server, freefloat, minishare, and savant. 
   * webdav exploit poc
+  * xmlrpc bruteforce
 
 **crackoders:**: password cracking and decoding scripts
 
