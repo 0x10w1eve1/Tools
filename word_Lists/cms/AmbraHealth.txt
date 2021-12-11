@@ -1,0 +1,481 @@
+DICOM Grid (dba Ambra Health)
+v3 Services Public API
+Table of contents
+Introduction
+Global information
+Error handling
+Filters
+Fields
+Pagination
+Sorting
+Bundled calls
+Permissions
+Schedules
+Account settings
+Study AI questions
+Namespace AI questions
+Session commands
+/session/login
+/session/user
+/session/permissions
+/session/logout
+/session/csrf/enable
+/session/uuid
+/session/oauth/start
+/session/oauth
+/session/oauth/token
+/session/pin
+/session/sign
+/session/ttl
+User commands
+/user/join
+/user/add
+/user/get
+/user/set
+/user/delete
+/user/password/lost
+/user/password/reset
+/user/welcome
+/user/join/list
+/user/join/request
+/user/invite
+/user/invite/accept
+/user/namespace/list
+/user/event
+/user/event/set
+/user/token
+/user/device/clear
+/user/signature
+/user/enable
+/user/pubkey/list
+/user/pubkey/get
+Study commands
+/study/add
+/study/set
+/study/delete
+/study/list
+/study/count
+/study/cfind
+/study/get
+/study/permissions
+/study/exists
+/study/push
+/study/push/hl7
+/study/pdf/hl7
+/study/fax/hl7
+/study/cmove
+/study/node/can/remove
+/study/share/who
+/study/share
+/study/share/stop
+/study/share/list
+/study/approve
+/study/reject
+/study/audit
+/study/star
+/study/report/detail
+/study/report/series
+/study/viewer/settings
+/study/viewer3/settings
+/study/status/set
+/study/status/locks
+/study/status/history
+/study/move
+/study/duplicate
+/study/split
+/study/freeze
+/study/manual/route
+/study/find/order
+/study/archive
+/study/retrieve
+/study/comment/add
+/study/comment/delete
+/study/comment/get
+/study/validate
+/study/attach/customfields
+/study/external/viewer
+/study/question
+/study/dicomdata/load
+/study/timing/event
+/study/timing/log
+/study/sync
+/study/take
+/study/request/add
+/study/request/get
+/study/request/match
+/study/revive
+Tag commands
+/tag/list
+/tag/add
+/tag/delete
+Annotation commands
+/annotation/list
+/annotation/add
+/annotation/set
+/annotation/get
+/annotation/delete
+Keyimage commands
+/keyimage/list
+/keyimage/add
+/keyimage/get
+/keyimage/delete
+Study validation commands
+/validate/list
+/validate/add
+/validate/set
+/validate/get
+/validate/delete
+Study DICOM data commands
+/dicomdata/list
+/dicomdata/get
+Radiology reports commands
+/radreport/add
+/radreport/set
+/radreport/get
+/radreport/audit
+/radreport/delete
+/radreport/description
+/radreport/user/list
+/radreportmacro/list
+/radreportmacro/add
+/radreportmacro/set
+/radreportmacro/get
+/radreportmacro/delete
+/radreport/pdf
+/radreport/fax
+/radreport/email
+/radreport/template/list
+/radreport/template/add
+/radreport/template/set
+/radreport/template/get
+/radreport/template/get/type
+/radreport/template/delete
+/radreport/template/activate
+Custom code commands
+/customcode/add
+/customcode/get
+/customcode/set
+/customcode/zip
+/customcode/delete
+/customcode/list
+/customcode/deploy
+/customcode/undeploy
+/customcode/deploy/get
+/customcode/deploy/list
+Case commands
+/case/get
+/case/set
+/case/return
+/case/delete
+/case/list
+/case/attach
+Patient commands
+/patient/add
+/patient/get
+/patient/set
+/patient/delete
+/patient/list
+/patient/study/list
+/patient/portal/find
+/patient/portal/pin
+/patient/portal/login
+/patient/portal/list
+Order commands
+/order/add
+/order/get
+/order/set
+/order/delete
+/order/list
+/order/sps/add
+/order/sps/set
+/order/sps/delete
+/order/sps/status
+/order/sps/find
+HL7 commands
+/hl7/list
+/hl7/add
+/hl7/get
+/hl7/delete
+/hl7/study/report
+/hl7/extract/report
+/hl7/template/list
+/hl7/template/add
+/hl7/template/set
+/hl7/template/get
+/hl7/template/render
+/hl7/template/delete
+/hl7/transform/list
+/hl7/transform/add
+/hl7/transform/set
+/hl7/transform/get
+/hl7/transform/delete
+/hl7/transform/test
+/hl7/parse/fields
+Settings commands
+/setting/set
+/setting/get
+/setting/get/all
+Node commands
+/node/list
+/node/public
+/node/connect
+/node/approve
+/node/add
+/node/set
+/node/get
+/node/ping
+/node/ping/ack
+/node/deliver
+/node/retrieve
+/node/webhook
+/node/configuration
+/node/delete
+/node/study/queued
+/node/study/anonymized
+/node/found
+/node/found/mwl
+/node/event
+/node/log
+/node/xml
+/node/metric
+/node/performance/set
+/node/performance/get
+/node/progress/add
+/node/progress/list
+/node/progress/get
+Destination commands
+/destination/list
+/destination/add
+/destination/set
+/destination/get
+/destination/delete
+/destination/search
+/destination/search/report
+/destination/retrieve
+/destination/search/mwl
+Route commands
+/route/list
+/route/add
+/route/set
+/route/get
+/route/delete
+/route/physician/alias/match
+Account commands
+/account/list
+/account/set
+/account/get
+/account/user/add
+/account/user/set
+/account/user/get
+/account/user/delete
+/account/user/list
+/account/user/report/login
+/account/can/share
+/account/can/share/stop
+/account/can/share/list
+/account/css
+/account/settings
+/account/settings/validate
+/account/connect
+/account/md5/counter
+/account/list/requestable
+/account/radreport/email/authorize
+Location commands
+/location/list
+/location/add
+/location/set
+/location/get
+/location/delete
+/location/user/add
+/location/user/delete
+/location/user/list
+Group commands
+/group/list
+/group/add
+/group/set
+/group/get
+/group/delete
+/group/user/add
+/group/user/delete
+/group/user/list
+/group/scanner/validate
+Role commands
+/role/list
+/role/add
+/role/set
+/role/get
+/role/delete
+/role/default/permissions
+/role/report/detail
+Activity commands
+/activity/list
+/activity/list/count
+/activity/get
+/activity/delete
+Audit commands
+/audit/object
+/audit/user
+/audit/account
+/audit/deleted
+/audit/log
+/audit/failedlogins
+Namespace commands
+/namespace/permissions
+/namespace/settings
+/namespace/share_code
+/namespace/share/pricing
+/namespace/share/price
+/namespace/anonymize
+/namespace/coverpage
+/namespace/validate/customfields
+/namespace/event/defaults
+/namespace/study/defaults
+/namespace/engine/fqdn
+/namespace/removed/user/report
+/namespace/question
+/namespace/audit
+Help commands
+/help/get
+/help/set
+Terminology commands
+/terminology/account/overrides
+/terminology/tags
+/terminology/set
+/terminology/list
+/terminology/i18next
+Analytics commands
+/analytics/study
+/analytics/patient/portal
+/analytics/radreport
+/analytics/user
+Filter commands
+/filter/list
+/filter/add
+/filter/get
+/filter/set
+/filter/delete
+/filter/share
+/filter/share/stop
+/filter/share/list
+Custom field commands
+/customfield/list
+/customfield/add
+/customfield/set
+/customfield/get
+/customfield/delete
+/customfield/lookup
+/customfield/search
+Webhook commands
+/webhook/list
+/webhook/add
+/webhook/set
+/webhook/get
+/webhook/delete
+/webhook/trigger
+/webhook/run
+/webhook/event
+/webhook/email
+Purge commands
+/purge/list
+/purge/add
+/purge/set
+/purge/get
+/purge/delete
+/purge/run
+Link commands
+/link/list
+/link/add
+/link/get
+/link/delete
+/link/status
+/link/session
+/link/redirect
+/link/external
+/link/sso
+/link/sid
+/link/mail
+/link/charge
+/link/pin
+Message commands
+/message/list
+/message/add
+/message/get
+/message/delete
+/message/count
+Dictionary commands
+/dictionary/list
+/dictionary/add
+/dictionary/set
+/dictionary/get
+/dictionary/delete
+/dictionary/entries
+/dictionary/entry/add
+/dictionary/entry/delete
+/dictionary/attach
+/dictionary/attach/set
+/dictionary/detach
+Report commands
+/report/status
+/report/zip
+Meeting commands
+/meeting/add
+/meeting/set
+/meeting/get
+/meeting/join
+/meeting/leave
+/meeting/roster
+/meeting/presenter
+/meeting/ping
+/meeting/delete
+/meeting/events/add
+Appointment commands
+/appointment/add
+/appointment/get
+/appointment/set
+/appointment/delete
+/appointment/list
+Training commands
+/training/todo
+/training/done
+RSNA commands
+/rsna/phr_study
+NPI commands
+/npi/find
+Site commands
+/site/list
+/site/add
+/site/set
+/site/get
+/site/delete
+/site/user/add
+/site/user/set
+/site/user/list
+/site/user/delete
+Scanner commands
+/scanner/list
+/scanner/add
+/scanner/set
+/scanner/get
+/scanner/delete
+Query commands
+/query/list
+/query/count
+/query/add
+/query/set
+/query/get
+/query/delete
+/query/seen
+/query/status/set
+/query/attachment/add
+/query/attachment/commit
+/query/attachment/delete
+QC task commands
+/qctask/add
+/qctask/set
+/qctask/get
+Anonymization profile commands
+/anonymization/list
+/anonymization/add
+/anonymization/set
+/anonymization/get
+/anonymization/delete
