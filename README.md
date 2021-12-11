@@ -14,3 +14,4 @@ Hello, these are some of programs I wrote during my OSCP training _(spoilers rem
 
 **wordlistEdit:** scripts for wordlist generation and file parsing	
 
+**word_Lists:** wordlists for directory brute forcing 
