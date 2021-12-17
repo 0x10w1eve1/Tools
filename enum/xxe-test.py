@@ -54,7 +54,7 @@ def write_results(results_dict):
 	for key,value in results_dict.items():
 		resultsFile.write("\n<========= %s  =========>\n"%key)
 		for url in results_dict[key]:
-			resultsFile.write(url)
+			resultsFile.write(url+"\n")
 
 	resultsFile.close()
 
