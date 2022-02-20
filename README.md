@@ -1,6 +1,6 @@
 # Tools
 
-Hello, these are some of programs I wrote during my OSCP training _(spoilers removed)_ and work-related engagements. 
+Just some scripts I wrote and find useful. 
 
 **Exploit Writing (begginer):** _(cve's and original poc's can be found online)_
   * Buffer Overflow helper scripts
@@ -15,3 +15,5 @@ Hello, these are some of programs I wrote during my OSCP training _(spoilers rem
 **wordlistEdit:** scripts for wordlist generation and file parsing	
 
 **word_Lists:** wordlists for directory brute forcing 
+
+**myUtils:** task automation
