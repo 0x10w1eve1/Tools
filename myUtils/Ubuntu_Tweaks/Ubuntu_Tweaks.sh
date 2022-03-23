@@ -162,16 +162,17 @@ getTools (){
 
 	#below is autoinstalled after upgrade
 	#apt install ca-certificates
-
+	dlChrome="${tempfordl}googleChrome"
+	dlBurp="${tempfordl}BurpPro.sh"
 	echo "[+] Downloading Chrome"
 	apt install wget
-	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O $tempfordl.googleChrome
+	wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" -O $dlChrome
 	
 	echo -e "[+] Installing chrome"
-	dpkg -i $tempfordl.googleChrome
+	dpkg -i $dlChrome
+	rm $dlChrome
 
 	echo -e "[+] Installing other Tools"
-	rm $tempfordl.googleChrome
 
 	echo -e "\n--> adding cherryTree repo"
 	add-apt-repository ppa:giuspen/ppa -y
@@ -184,6 +185,15 @@ getTools (){
 
 	echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections
 	DEBIAN_FRONTEND=noninteractive apt -y install wireshark curl nmap sublime-text cherrytree gnome-tweaks gnome-tweak-tool ssh apache2 net-tools
+	
+	#burpsuite pro
+	wget "https://portswigger-cdn.net/burp/releases/download?product=pro&version=2022.2.4&type=Linux" -O $dlBurp
+	chmod +x $dlBurp
+	/bin/sh $dlBurp
+	rm $dlBurp
+	echo -e "\n\t [+] Done installing Tools [+]"
+	
+	
 	cleanin	
 
 }
@@ -297,7 +307,10 @@ elif [[ $installtype == "c" ]]
 		echo -e "\n [!!!] No valid functions entered...exiting"
 		exit
 	else
-		echo -e "\n[?] Run valid functions? (y/n)"
+		echo -e "\n [!] Chosen Functions [!] "
+		for i in ${valid[@]};do echo -e "+${i}";done
+		echo -e "\n[?] Run functions? (y/n)"
+		
 		read continue
 		if [[ $continue == 'y' ]]
 		then
