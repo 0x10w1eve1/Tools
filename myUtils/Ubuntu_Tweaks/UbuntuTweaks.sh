@@ -1,11 +1,59 @@
 #!/bin/bash
 
-##############################################################################
-######									######
-######	Automate some basic ubuntu customizations 			######
-######	For non-interactive run see comments in rmSnapnStuff function	######
-###### 									######
-##############################################################################
+Usage="""
+#########0x10w1eve1###################################################
+###### 								######
+###### 		USAGE:	dot-slash-it, c will list functions	######
+###### 								######
+######	Customizations 'TO DO' after a fresh Ubuntu install	######
+######								######
+######		If needing a non-interactive run, comment out:	######
+######		--> while loop in rmSnapnStuff			######
+######		--> BurpSuite install (it needs a few clicks)	######
+###### 								######
+###### 		*Tested on*:	[ Ubuntu Focal 20.04.4 LTS ]	######
+######				[ Ubuntu Jammy 22.04 LTS ]	######
+###### 								######
+########0x10w1eve1####################################################
+
+*******************************************
+*********** 14 Available Functions ********
+*******************************************
+
++proceed --> too complicated to explain
+
++cleanin --> clean apt cache files
+
++regUpdate --> run update/upgrade
+
++rebootin --> reboot system
+
++usermodin --> let user sudo without passwd. 
+
++rmSnapnStuff --> oh snap we snapped the snap
+
++DNSedit --> free port 53, add cloudflare local dns route, enable secure dns
+
++changesources --> clean sources.list
+
++getTools -->	install chrome, wireshark, curl, wget, aircrack-ng, nmap,
+				sublime-text, cherrytree, gnome-tweaks, ssh, apache2, 
+				net-tools, make, BurpSuite
+
++chngusername --> change username
+
++runchecks --> print configs to check dns editions
+
++dnsmasq --> install dnsmasq
+
++forvpn --> install resolvconf for dns management if bridging
+
++install --> Run functions: regUpdate, usermoding, rmSnapnStuff, DNSedit, getTools
+
+*******************************************
+*******************************************
+
+"""
 
 
 if [[ $(id -u) -ne 0 ]]
@@ -17,13 +65,19 @@ then
         fi
 fi
 
+if [[ "$1"=="-h" ]]
+then
+	echo -e "\n\n\t$Usage"
+fi
+
+############## GLOBALS ####################
 
 #util vars
 username=$(users|cut -d " " -f1)
 dnsfile="/etc/systemd/resolved.conf"
 netmanfile="/etc/NetworkManager/NetworkManager.conf"
 ##default dirs to remove from /home/$username
-redundirs=("Desktop" "Pictures" "Public" "Templates" "Videos")
+redundirs=("Desktop" "Pictures" "Public" "Templates" "Videos" "Documents")
 ##temp for deb pkgs download
 tempfordl="/tmp/"
 
@@ -40,10 +94,9 @@ deb-src http://security.ubuntu.com/ubuntu ${DISTRIB_CODENAME}-security main rest
 
 """
 
+##########################################
 
-
-
-# basic commands
+############### HELPERS ##################
 
 proceed (){
 	echo -e "\n\n\t\t\t Hit enter to continue"
@@ -69,6 +122,10 @@ rebootin (){
 	reboot -f
 }
 
+##########################################
+############ Default Install #############
+
+
 usermodin (){
 	# sudo no passwd
 	echo -e "\n\n\t\t\t [!] Adding current user as sudo nopasswd: (y/n) "
@@ -83,11 +140,7 @@ usermodin (){
 
 }
 
-chngusername (){
-	echo -e "\n\n\t\t\t [!] Changing username, Enter current username: "
-	read curruser
-	usermod -l $username $curruser; usermod -d /home/$username -m $username
-}
+
 
 
 # remove snap,cups, updatenotifier
@@ -188,23 +241,24 @@ getTools (){
 	#apt install ca-certificates
 	dlChrome="${tempfordl}googleChrome"
 	dlBurp="${tempfordl}BurpPro.sh"
+	
+	
+	#chrome
 	echo "\n\n\t\t\t[+] Downloading Chrome \n\n"
 	apt install wget
 	wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" -O $dlChrome
-	
-	#chrome
 	echo -e "[+] Installing chrome"
 	dpkg -i $dlChrome
 	rm $dlChrome
 
 	#BurpSuite
-	#burpsuite community
+	## community
 	wget "https://portswigger-cdn.net/burp/releases/download?type=Linux" -O $dlBurp
 	chmod +x $dlBurp
 	/bin/sh $dlBurp
 	rm $dlBurp
 	
-	#burpsuite pro
+	## pro
 	#wget "https://portswigger-cdn.net/burp/releases/download?&type=Linux" -O $dlBurp
 	
 	
@@ -227,11 +281,17 @@ getTools (){
 
 	echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections
 	DEBIAN_FRONTEND=noninteractive apt -y install wireshark
-	apt-get install -y curl nmap sublime-text cherrytree gnome-tweaks ssh apache2 net-tools git aircrack-ng firefox gnome-shell-extensions
+	apt-get install -y curl nmap sublime-text cherrytree gnome-tweaks ssh apache2 net-tools git aircrack-ng firefox gnome-shell-extensions make 
 	#music tools
 	#clementine pulseaudio pulseeffects pavucontrol
 	
-	
+	#disabling servers that are autostart by default
+	defaultrunners=("apache2" "ssh")
+	for i in "${defaultrunners[@]}";do
+		systemctl stop $i
+		systemctl disable $i 
+	done
+
 	
 	
 	
@@ -242,6 +302,19 @@ getTools (){
 
 }
 
+##########################################
+############ OPTIONAL Tasks ##############
+
+chngusername (){
+	echo -e "\n\n\t\t\t [!] Changing username, Enter current username: "
+	read curruser
+	usermod -l $username $curruser; usermod -d /home/$username -m $username
+}
+
+##########################################
+
+
+######### For VPN configurations #########
 
 runchecks (){
 	echo -e "\n[+] Printing sudoers"
@@ -299,18 +372,27 @@ wifi.scan-rand-mac-address=no
 
 }
 
+##########################################
+
+
+
+######### Main Function #########
+
+
 install (){
 	# Main program
 	echo -e "\n\n\t\t\t[+][+] Starting Install [+][+]\n\n "
 	regUpdate
-	#usermodin
+	usermodin
 	rmSnapnStuff
+	DNSedit
 	getTools
-	qqqqqqqqqrebootin
+	
 }
 
-# Main Program 
+########## Main Program ##########
 
+# regular runs install func
 echo -e "\n\n\t\t\t[?] Regular install or custom?: r/c"
 read installtype
 

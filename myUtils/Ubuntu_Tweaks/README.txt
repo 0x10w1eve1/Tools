@@ -1,28 +1,56 @@
-+changesources --> clean sources.list
+##################################################################
+###### 														######
+###### 		USAGE:	dot-slash-it, c will list functions		######
+###### 														######
+######	Customizations 'TO DO' after a fresh Ubuntu install	######
+######														######
+######		If needing a non-interactive run, comment out:	######
+######		--> while loop in rmSnapnStuff					######
+######		--> BurpSuite install (it needs a few clicks)	######
+###### 														######
+###### 		*Tested on:	[ Ubuntu Focal 20.04.4 LTS ]		######
+######					[ Ubuntu Jammy 22.04 LTS ]		 	######
+###### 														######
+##################################################################
 
-+chngusername --> change username
-
-+cleanin --> clean apt cache files
-
-+DNSedit --> free port 53, add cloudflare local dns route, enable secure dns
-
-+dnsmasq --> install dnsmasq if needed
-
-+forvpn --> if running ubuntu in bridged vm, use this to install resolvconf for dns management
-
-+getTools --> install chrome, wireshark, curl, nmap, sublime-text, cherrytree, gnome-tweaks, gnome-tweak-tool, ssh, apache2, net-tools
-
-+install --> basic install: remove snap store, free port 53, install tools
+*******************************************
+*********** 14 Available Functions ********
+*******************************************
 
 +proceed --> too complicated to explain
 
-+rebootin --> reboot system
++cleanin --> clean apt cache files
 
 +regUpdate --> run update/upgrade
 
-+rmSnapnStuff --> ubuntu comes with snap store enabled by default, which causes apt to install 'snap' versions of some packages by default. versions may be diff than maintainers. this rmeoves snap.
-
-+runchecks --> 
++rebootin --> reboot system
 
 +usermodin --> let user sudo without passwd. 
+
++rmSnapnStuff --> oh snap we snapped the snap
+
++DNSedit --> free port 53, add cloudflare local dns route, enable secure dns
+
++changesources --> clean sources.list
+
++getTools -->	install chrome, wireshark, curl, wget, aircrack-ng, nmap,
+				sublime-text, cherrytree, gnome-tweaks, ssh, apache2, 
+				net-tools, make, BurpSuite
+
++chngusername --> change username
+
++runchecks --> print configs to check dns editions
+
++dnsmasq --> install dnsmasq
+
++forvpn --> install resolvconf for dns management if bridging
+
++install --> Run functions: regUpdate, usermoding, rmSnapnStuff, DNSedit, getTools
+
+*******************************************
+*******************************************
+
+
+
+
  
