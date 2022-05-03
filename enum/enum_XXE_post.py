@@ -87,7 +87,7 @@ payloads=["""
 show_settings()
 
 
-ambra_sid="?sid=71b3751b-0185-4458-9d38-b3467c5e822c&uuid=78471fe9-4ba7-42d2-be56-61845d94102f"
+
 
 logfile=open('xxeScan_log','w')
 
@@ -99,7 +99,7 @@ for url in urls.readlines():
 		"Accept": "*/*",
 		"Origin": target,
 		"Referer": target,
-		"Cookie":"csrf_token=de476866-a5f1-46af-87e3-eeb21fb70de7-128; __stripe_mid=eb000e4a-dcae-4a09-94fe-696f18ad9db965e50a",
+		"Cookie":"",
 		"Content-Type":"%s"%ctype
 		}
 
