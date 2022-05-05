@@ -105,7 +105,7 @@ proceed (){
 
 
 cleanin (){
-	echo -e "\n\n\t\t\t[+] Cleaning..."
+	echo -e "\n\n\t\t\t[+] Cleaning apt files\n"
 	apt autoremove -y
 	apt autoclean
 }
@@ -146,11 +146,17 @@ usermodin (){
 # remove snap,cups, updatenotifier
 rmSnapnStuff (){
 	echo -e "\n\n\t\t\t[+] Starting SnapD destruction...\n"
+	snappaks=("snap-store" "firefox" "gtk-common-themes" "bare" "snapd-desktop-integration" "gnome-3-38-2004" "core20")
+	echo -e "\n\n\t\t\t [*] Removing snap packages.. Make sure all snap owned windows are closed\n"
+	for i in "${snappaks[@]}";do
+		printf "\n\t\t\t ---> Removing $i\n"
+		snap remove --purge $i
+	done
 	
-	echo -e "\n\n\t\t\t--> Removing snap-store"
-	snap remove --purge snap-store
-	snap remove --purge firefox
+	
 	# START COMMENT HERE__for non-interactive
+	printf "\n\n\t\t\t [!] All Snaps should be gone besides snapd, verify below \n\n"
+	##todo; if -z snap list continue
 	echo -e "\n\n\t\t\t===> $(snap list) <===\n"
 	echo "<!> Enter name of Snap pkg to delete, or N to continue:   "
 	read todesnap;
@@ -158,19 +164,20 @@ rmSnapnStuff (){
 	while [[ $todesnap != "N" ]]
 	
 	do
-		echo -e "\n--> Removing ${todesnap}"
+		echo -e "\n\t\t\t---> Removing ${todesnap}"
 		snap remove --purge $todesnap
 		
 		echo "<!> Enter name of pkg to delete, or N to continue:   "
 		read todesnap
 	done
 	# END COMMENT HERE__for non-interactive
-	echo -e "\n\n\t\t\t--> Removing snapd cache"
+	printf "\n\n\t\t\t [*] Taking care of snapd files\n\n"
+	echo -e "\n\n\t\t\t---> Removing snapd cache\n"
 	rm -rf /var/cache/snapd/
-	echo -e "\n\n\t\t\t--> Removing snapd"
+	echo -e "\n\n\t\t\t---> Removing snapd package\n"
 	apt autoremove --purge snapd -y
 	apt autoremove --purge gnome-software-plugin-snap
-	echo -e "\n\n\t\t\t--> removing snap directories"
+	echo -e "\n\n\t\t\t---> Removing snap user directories\n"
 	for i in $(ls /home/);do rm -rf /home/$i/snap;done
 	rm -rf /root/snap
 	apt-mark hold snapd
@@ -190,10 +197,13 @@ rmSnapnStuff (){
 
 # free port 53
 DNSedit (){
-	echo "\n\t\t\t[+] Editing DNS to free port 53, enable dnssec and dnsovertls"
+
+	
+	printf "\n\n\t\t\t[+] Starting DNS edits\n"
 
 
 	cp $dnsfile $dnsfile".bak"
+	#cloudflare dns
 	dnsmods=("DNS=1.1.1.1" "FallbackDNS=1.0.0.1" "DNSStubListener=no" "DNSSEC=true" "DNSOverTLS=yes")
 
 	for i in ${dnsmods[@]};do
@@ -226,9 +236,10 @@ changesources (){
 	echo -e "\n\n\t\t\t [+] changing apt sources list "
 
 	sourcesList=$UbuntuSrcLst
-	
+
 	cp /etc/apt/sources.list /etc/apt/sources.list.original
 	echo -e "\n${sourcesList}" > /etc/apt/sources.list
+	printf "\n\t\t\t ---> Original backed up to /etc/apt/sources.list.original\n"
 	apt update 
 	
 }
@@ -237,67 +248,85 @@ getTools (){
 	#update system
 	regUpdate
 
+	printf "\n\n [+] Starting Tools Install\n"
 	
-	#apt install ca-certificates
+	#apt install ca-certificates <-- was needed for earlier releases, now present on default image
 	dlChrome="${tempfordl}googleChrome"
 	dlBurp="${tempfordl}BurpPro.sh"
 	
-	
-	#chrome
-	echo "\n\n\t\t\t[+] Downloading Chrome \n\n"
 	apt install wget
+	#chrome
+	printf "\n\n\t\t\t---> Installing Chrome \n\n"
 	wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" -O $dlChrome
-	echo -e "[+] Installing chrome"
 	dpkg -i $dlChrome
-	rm $dlChrome
+
 
 	#BurpSuite
 	## community
 	wget "https://portswigger-cdn.net/burp/releases/download?type=Linux" -O $dlBurp
 	chmod +x $dlBurp
 	/bin/sh $dlBurp
+	
+	printf "\n\t\t\t[*] Cleaning temp files\n"
 	rm $dlBurp
+	rm $dlChrome
 	
-	## pro
-	#wget "https://portswigger-cdn.net/burp/releases/download?&type=Linux" -O $dlBurp
-	
-	
-	echo -e "[+] Installing other Tools"
-
-	echo -e "\n--> adding cherryTree repo"
+	echo -e "\n\t\t\t[*] Adding external repos"
+	#cherrytree
+	echo -e "\n\t\t\t--> adding cherryTree repo\n"
 	add-apt-repository ppa:giuspen/ppa -y
-
-	echo -e "\n--> fetching sublime key"
+	
+	#sublime text
+	echo -e "\n\t\t\t--> adding sublimetext repo\n"
 	echo -e "\n\n#sublime\ndeb https://download.sublimetext.com/ apt/stable/" >> /etc/apt/sources.list
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 
-	#firefox (non snap repo)
-	add-apt-repository ppa:mozillateam/ppa
-	#auto upgrade
-	echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
+	#firefox
+	add-apt-repository ppa:mozillateam/ppa -y
+	# --> https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
+	firefoxpriority="""
+Package: *
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1001
+
+Package: firefox*
+Pin: release o=Ubuntu
+Pin-Priority: -1
+"""
+	firefoxupgrade='Unattended-Upgrade::Allowed-Origins:: '"LP-PPA-mozillateam:${DISTRIB_CODENAME}"';'
+	firefoxprefsfile="/etc/apt/preferences.d/mozilla-firefox"
+	firefoxupgradesfile="/etc/apt/apt.conf.d/51unattended-upgrades-firefox"
+	echo -e "\n${firefoxpriority}" > $firefoxprefsfile
+	#testing $firefoxprefsfile
+	echo -e "\n${firefoxupgrade}" > $firefoxupgradesfile
+	#testing $firefoxupgradesfile
 	
-
-	apt update
-
+	#wireshark noninteractive install
 	echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections
+	
+	apt update
+	
+	printf "\n\t\t\t [+] Starting Install of other tools...\n"
+	
+	printf "\n\t\t\t\t ---> WireShark\n\n\n"
 	DEBIAN_FRONTEND=noninteractive apt -y install wireshark
-	apt-get install -y curl nmap sublime-text cherrytree gnome-tweaks ssh apache2 net-tools git aircrack-ng firefox gnome-shell-extensions make 
-	#music tools
-	#clementine pulseaudio pulseeffects pavucontrol
+	
+	printf "\n\t\t\t\t ---> Others\n\n\n"
+	apt-get install -y curl nmap sublime-text cherrytree ssh apache2 net-tools git aircrack-ng gnome-shell-extensions make clementine 
+	
+	printf "\n\t\t\t\t ---> FireFox\n\n\n"
+	apt-get install firefox -y
+	
 	
 	#disabling servers that are autostart by default
+	printf "\n\n\t\t\t[+] Disabling default daemons\n"
 	defaultrunners=("apache2" "ssh")
 	for i in "${defaultrunners[@]}";do
 		systemctl stop $i
 		systemctl disable $i 
 	done
 
-	
-	
-	
-	echo -e "\n\t [+] Done installing Tools [+]"
-	
-	
+	echo -e "\n\t [+] Done installing Tools [+]\n\n"
 	cleanin	
 
 }
@@ -378,15 +407,30 @@ wifi.scan-rand-mac-address=no
 
 ######### Main Function #########
 
+testing (){
+	
+	printf "\n\t\t [!] All good? [!] \n"
+	printf "\n\t\t ---> printing ${1} \n\n"
+	cat $1
+	proceed
+}
 
 install (){
 	# Main program
 	echo -e "\n\n\t\t\t[+][+] Starting Install [+][+]\n\n "
-	regUpdate
-	usermodin
+	
 	rmSnapnStuff
+	changesources
+	regUpdate
 	DNSedit
 	getTools
+	usermodin
+	printf "\n\n\n\n\t\t\t\t [!!] Done [!!] \n\n"
+	printf "\n Jammy was weird on me with a bare metal AMD install with lvm encr\n"
+	printf "\n What helped me was a Full powerdown, on post go straight to bios, then saveNContinue and back to jammy\n"
+	printf "\n\t exiting..\n"
+	
+	#rebootin
 	
 }
 
