@@ -56,14 +56,6 @@ Usage="""
 """
 
 
-
-
-if [[ "$1"=="h" ]]
-then
-	echo -e "\n\n\t$Usage"
-	exit
-fi
-
 if [[ $(id -u) -ne 0 ]]
 then
         echo -e "\n\n\t\t\t [!] You Might need Root, y to proceed anyway [!]\n\n"
@@ -72,6 +64,12 @@ then
                 exit
         fi
 fi
+
+if [[ "$1"=="-h" ]]
+then
+	echo -e "\n\n\t$Usage"
+fi
+
 ############## GLOBALS ####################
 
 #util vars
@@ -148,10 +146,21 @@ usermodin (){
 # remove snap,cups, updatenotifier
 rmSnapnStuff (){
 	echo -e "\n\n\t\t\t[+] Starting SnapD destruction...\n"
+	snappaks=("snap-store" "firefox" "gtk-common-themes" "bare" "snapd-desktop-integration" "gnome-3-38-2004" "core20")
+	echo -e "\n\n\t\t\t [-] Removing snap packages..\n"
+	for i in "${snappaks[@]}";do
+		printf "\n\t [--->] $i\n"
+	done
 	
-	echo -e "\n\n\t\t\t--> Removing snap-store"
+
 	snap remove --purge snap-store
 	snap remove --purge firefox
+	snap remove --purge gtk-common-themes
+	snap remove --purge bare
+	snap remove --purge snapd-desktop-integration
+	snap remove --purge gnome-3-38-2004
+	snap remove --purge core20
+	
 	# START COMMENT HERE__for non-interactive
 	echo -e "\n\n\t\t\t===> $(snap list) <===\n"
 	echo "<!> Enter name of Snap pkg to delete, or N to continue:   "
@@ -273,17 +282,17 @@ getTools (){
 	echo -e "\n\n#sublime\ndeb https://download.sublimetext.com/ apt/stable/" >> /etc/apt/sources.list
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 
-	#firefox (non snap repo)
-	add-apt-repository ppa:mozillateam/ppa
+	#firefox (non snap repo), needs a reboot first?
+	add-apt-repository ppa:mozillateam/ppa -y
+	apt-update
 	#auto upgrade
-	echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
-	
-
+	echo -e 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${DISTRIB_CODENAME}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
 	apt update
 
 	echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections
 	DEBIAN_FRONTEND=noninteractive apt -y install wireshark
-	apt-get install -y curl nmap sublime-text cherrytree gnome-tweaks ssh apache2 net-tools git aircrack-ng firefox gnome-shell-extensions make 
+	#removed firefox from install, requires reboot first on jammy
+	apt-get install -y curl nmap sublime-text cherrytree ssh apache2 net-tools git aircrack-ng gnome-shell-extensions make clementine 
 	#music tools
 	#clementine pulseaudio pulseeffects pavucontrol
 	
@@ -294,9 +303,6 @@ getTools (){
 		systemctl disable $i 
 	done
 
-	
-	
-	
 	echo -e "\n\t [+] Done installing Tools [+]"
 	
 	
@@ -384,11 +390,14 @@ wifi.scan-rand-mac-address=no
 install (){
 	# Main program
 	echo -e "\n\n\t\t\t[+][+] Starting Install [+][+]\n\n "
-	regUpdate
-	usermodin
+	
 	rmSnapnStuff
+	changesources
+	regUpdate
 	DNSedit
 	getTools
+	usermodin
+	rebootin
 	
 }
 
