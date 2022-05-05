@@ -1,11 +1,12 @@
 #!/bin/bash
 
-########################################################################
-####	Convert cherryTree export into a dir structure                ####
-####	*note: work in progress, works but needs code cleaning        ####									
-####	in cherrytree menu->export->txt->don't checkl 'in one file'   ####
-####																                                ####
-#####0x10w1eve1#########################################################
+############################################################################
+####					                                ####
+####	Convert cherryTree export into a dir structure			####
+####	*note: work in progress, works but needs code cleaning		####									
+####	in cherrytree menu->export->txt->don't check 'in one file'	####
+####					                                ####
+#####0x10w1eve1#############################################################
 
 ## Working dirs
 
@@ -61,7 +62,6 @@ for file in $(ls $cherrydir);do
 	# Note2self: sed the '-' into something else first to avoid spluting files with tools names like recon-ng
 	NODES=($(echo $file |sed "s/^$treetitle--//"|sed 's/\.txt//'|tr '\-\-' ' '))
 	
-
 	cwd=$gitdir
 	length=${#NODES[@]}
 	endLoop=$(( $length - 1 ))
@@ -71,7 +71,6 @@ for file in $(ls $cherrydir);do
 	# contents of final childnode
 	childNodeData=$cherrydir$file
 
-	
 	#sort parents and children
 	for ((i = 0 ; i < $endLoop;i++));do
 		if (( $i != 0 ));then
@@ -81,8 +80,6 @@ for file in $(ls $cherrydir);do
 		#keep updating cwd as you move down the rabbit hole. 
 		currnode=${NODES[$i]}
 		cwd+=${NODES[$i]}
-		
-		#cwd+="/"
 		
 		# parent node with content gets written as a file becuase of how last node is detected
 		# note2self; if cat node is empty, mkdir node else touch node
@@ -109,35 +106,8 @@ for file in $(ls $cherrydir);do
 	cp $childNodeData $cwd$childNodeFileName
 	
 	
-
-
 done
 
-
-#### 4am psuedo for parent node written as file problem. 
-# create the childnode
-
-	#file was created, but we have another file for the catergory, so we need to make a dir for it
-	# dirs made cms
-	# file made drupal.txt in cms. so we have cms/drupal.txt
-	# now we have a new node like cms/drupal/webforms.txt
-	# we cant just touch cms/drupal/webforms.txt becuase cms/drupal/ doesnt exist. we have cms/drupal.txt (no ext but hsould be file)
-	# cwd = cms/drupal/  
-	# cwdarr()
-	# cwdarr=($(echo cwd| tr '\\' ' '))
-	# if not dir cms/drupal
-	# mkdir cms/drupal-new  <-- new tempdirname
-	# existing file = cwdarr[1]
-	# mv cwdarr[0]/existingfile cwdarr[0]/drupalnew/existingfile+.txt
-	# mv  cwdarr[0]/tempdirname cwd
-	# final statment below. 
-#printf "\n\n\t\t [+]-----------[+]\n"
-#printf $cwd$childNodeFileName
-#read continue
-#printf "\n\t\t\t [!] BEFORE STATS\n"
-#printf $Beforestats
-#printf "\n\t\t\t [!] AFTER STATS\n"
-#printf $Afterstats
 
 LOGS=Beforestats=$(cat <<-END
 	childNodeFileName: ${childNodeFileName}
