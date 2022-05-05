@@ -4,9 +4,9 @@
 
 **What is CherryTree?** : *A hierarchical note taking application, featuring rich text and syntax highlighting, storing data in a single XML or SQLite file.*
 
-CherryTree [home page] (giuspen.com/cherrytree)
+CherryTree [home page](giuspen.com/cherrytree)
 
-CherryTree [Github Repo] (https://github.com/giuspen/cherrytree)
+CherryTree [Github Repo](https://github.com/giuspen/cherrytree)
 
 
 
