@@ -284,8 +284,18 @@ getTools (){
 
 	#firefox (non snap repo), needs a reboot first?
 	add-apt-repository ppa:mozillateam/ppa -y
-	apt-update
-	#auto upgrade
+	# --> https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
+	firefoxpriority="""
+	Package: *
+	Pin: release o=LP-PPA-mozillateam
+	Pin-Priority: 1001
+	
+	Package: firefox*
+	Pin: release o=Ubuntu
+	Pin-Priority: -1
+	
+	"""
+	echo -e $firefoxpriority | sudo tee /etc/apt/preferences.d/mozilla-firefox
 	echo -e 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${DISTRIB_CODENAME}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
 	apt update
 
