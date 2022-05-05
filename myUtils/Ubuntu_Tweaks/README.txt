@@ -302,7 +302,7 @@ getTools (){
 	echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections
 	DEBIAN_FRONTEND=noninteractive apt -y install wireshark
 	#removed firefox from install, requires reboot first on jammy
-	apt-get install -y curl nmap sublime-text cherrytree ssh apache2 net-tools git aircrack-ng gnome-shell-extensions make clementine 
+	apt-get install -y curl nmap sublime-text cherrytree ssh apache2 net-tools git aircrack-ng gnome-shell-extensions make clementine firefox
 	#music tools
 	#clementine pulseaudio pulseeffects pavucontrol
 	
