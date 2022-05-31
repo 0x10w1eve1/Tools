@@ -1,6 +1,7 @@
 #!/bin/bash
 
-Usage="""
+Usage=$(cat << EOF
+
 #########0x10w1eve1###################################################
 ###### 								######
 ###### 		USAGE:	dot-slash-it, c will list functions	######
@@ -17,7 +18,7 @@ Usage="""
 ########0x10w1eve1####################################################
 
 *******************************************
-*********** 14 Available Functions ********
+*********** Available Functions ***********
 *******************************************
 
 +proceed --> too complicated to explain
@@ -36,9 +37,9 @@ Usage="""
 
 +changesources --> clean sources.list
 
-+getTools -->	install chrome, wireshark, curl, wget, aircrack-ng, nmap,
-				sublime-text, cherrytree, gnome-tweaks, ssh, apache2, 
-				net-tools, make, BurpSuite
++getTools -->	install chrome, wireshark, curl, wget, 
+		aircrack-ng, nmap, sublime-text, cherrytree, 
+		gnome-tweaks, ssh, apache2, net-tools, make, BurpSuite
 
 +chngusername --> change username
 
@@ -48,13 +49,22 @@ Usage="""
 
 +forvpn --> install resolvconf for dns management if bridging
 
-+install --> Run functions: regUpdate, usermoding, rmSnapnStuff, DNSedit, getTools
++install --> Run functions: regUpdate, usermoding,
+	     rmSnapnStuff, DNSedit, getTools
 
 *******************************************
 *******************************************
+EOF
+)
 
-"""
 
+
+
+if [[ $1 == "-h" ]] || [[ $1 == "--help" ]] || [[ $1 == "--h" ]] || [[ $1 == "-help" ]]
+then
+	echo -e "\n\n\t$Usage"
+	exit
+fi
 
 if [[ $(id -u) -ne 0 ]]
 then
@@ -65,10 +75,7 @@ then
         fi
 fi
 
-if [[ "$1"=="-h" ]]
-then
-	echo -e "\n\n\t$Usage"
-fi
+
 
 ############## GLOBALS ####################
 
@@ -93,6 +100,8 @@ deb http://security.ubuntu.com/ubuntu ${DISTRIB_CODENAME}-security main restrict
 deb-src http://security.ubuntu.com/ubuntu ${DISTRIB_CODENAME}-security main restricted universe multiverse
 
 """
+
+
 
 ##########################################
 
@@ -147,7 +156,8 @@ usermodin (){
 rmSnapnStuff (){
 	echo -e "\n\n\t\t\t[+] Starting SnapD destruction...\n"
 	snappaks=("snap-store" "firefox" "gtk-common-themes" "bare" "snapd-desktop-integration" "gnome-3-38-2004" "core20")
-	echo -e "\n\n\t\t\t [*] Removing snap packages.. Make sure all snap owned windows are closed\n"
+	echo -e "\n\n\t\t\t [*] Removing snap packages.. \n\n"
+	echo -e "\n\t\t\t ------> [!] [!] Make sure all snap owned windows are closed [!] [!] <------\n"
 	for i in "${snappaks[@]}";do
 		printf "\n\t\t\t ---> Removing $i\n"
 		snap remove --purge $i
@@ -157,6 +167,7 @@ rmSnapnStuff (){
 	# START COMMENT HERE__for non-interactive
 	printf "\n\n\t\t\t [!] All Snaps should be gone besides snapd, verify below \n\n"
 	##todo; if -z snap list continue
+	echo -e "[ ## LIST OF SNAPD PACKAGES ON SYSTEM ## ]\n"
 	echo -e "\n\n\t\t\t===> $(snap list) <===\n"
 	echo "<!> Enter name of Snap pkg to delete, or N to continue:   "
 	read todesnap;
@@ -239,7 +250,7 @@ changesources (){
 
 	cp /etc/apt/sources.list /etc/apt/sources.list.original
 	echo -e "\n${sourcesList}" > /etc/apt/sources.list
-	printf "\n\t\t\t ---> Original backed up to /etc/apt/sources.list.original\n"
+	printf "\n\t\t\t ---> [*][*] Original Sources backed up to /etc/apt/sources.list.original\n\n"
 	apt update 
 	
 }
@@ -252,7 +263,7 @@ getTools (){
 	
 	#apt install ca-certificates <-- was needed for earlier releases, now present on default image
 	dlChrome="${tempfordl}googleChrome"
-	dlBurp="${tempfordl}BurpPro.sh"
+	dlBurp="${tempfordl}Burp.sh"
 	
 	apt install wget
 	#chrome
@@ -283,7 +294,7 @@ getTools (){
 
 	#firefox
 	add-apt-repository ppa:mozillateam/ppa -y
-	# --> https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
+	##--> https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
 	firefoxpriority="""
 Package: *
 Pin: release o=LP-PPA-mozillateam
@@ -422,73 +433,106 @@ install (){
 	rmSnapnStuff
 	changesources
 	regUpdate
-	DNSedit
-	getTools
-	usermodin
-	printf "\n\n\n\n\t\t\t\t [!!] Done [!!] \n\n"
-	printf "\n Jammy was weird on me with a bare metal AMD install with lvm encr\n"
-	printf "\n What helped me was a Full powerdown, on post go straight to bios, then saveNContinue and back to jammy\n"
-	printf "\n\t exiting..\n"
+	#DNSedit
+	#getTools
+	#usermodin
 	
-	#rebootin
+	touch "/tmp/x10w.txt"
+	printf "\n [+] [+] Run script again upon restart for Part [+] [+] 2\n"
+	rebootin
+	
+	
+	#printf "\n\n\n\n\t\t\t\t [!!] Done [!!] \n\n"
+	#printf "\n Jammy was weird on me with a bare metal AMD install with lvm encr\n"
+	#printf "\n What helped me was a Full powerdown, on post go straight to bios, then saveNContinue and back to jammy\n"
+	#printf "\n\t exiting..\n"
 	
 }
+
+install2 (){
+
+	# Main program part 2
+	echo -e "\n\n\t\t\t[+][+] Starting Install PART 2 [+][+]\n\n "
+	usermodin
+	DNSedit
+	getTools
+	regUpdate
+	rm "/tmp/x10w.txt"
+	rebootin
+}
+
+
+	
+	
+	
+	
 
 ########## Main Program ##########
 
 # regular runs install func
-echo -e "\n\n\t\t\t[?] Regular install or custom?: r/c"
-read installtype
+
+# 2 parts wrapper
 
 
-if [[ $installtype == "r" ]]
+if [[ -f "/tmp/x10w.txt" ]]
 then
-	install
-
-elif [[ $installtype == "c" ]]
-then
-	echo -e "\n\n\t\t\t [+++] Available Functions [+++] \n"
-	AllFuncs=$(declare -F | awk '{print $NF}' | sort | egrep -v "^_")
-	for i in $AllFuncs;do echo -e "+${i}";done
-	echo -e "\n\n\t\t\t [?] Enter desired functions separated by a space"
-	read userFunctions	
-	functionsToExec=($(echo $userFunctions | sed 's/ /\n/g'))
-	for func in ${functionsToExec[@]};do
-		if [[ $(echo ${AllFuncs} | grep -w -q ${func};echo $?) == 1 ]]
-		then
-			invalid+=($func)
-		else
-			valid+=($func)
-		fi
-	done
-
-	if (( ${#invalid[@]} ))
-	then
-		echo -e "\n [!] Invalid Functions [!] "
-		for i in ${invalid[@]};do echo -e "+${i}";done
-	fi
-	if (( !${#valid[@]} ))
-	then
-		echo -e "\n\n\t\t\t [!!!] No valid functions entered...exiting"
-		exit
-	else
-		echo -e "\n\n\t\t\t [!] Chosen Functions [!] \n\n"
-		for i in ${valid[@]};do echo -e "+${i}";done
-		echo -e "\n\n\t\t\t[?] Run functions? (y/n)"
-		
-		read continue
-		if [[ $continue == 'y' ]]
-		then
-			echo -e "\n\n\t\t\t[+] Running functions...\n"
-			for func in ${valid[@]};do 
-				echo -e "--> ${func}"
-				$func
-			done
-		else
-			echo -e "\n\n\t\t\t[+] Not running.. Exiting..."
-			exit
-		fi
-	fi
+	install2
 else
-	echo -e "\n\n\t\t\t [!] Invalid input, expecting r|c, exiting..."
+
+	echo -e "\n\n\t\t\t[?] Regular install or custom?: r/c"
+	read installtype
+
+
+	if [[ $installtype == "r" ]]
+	then
+		install
+
+	elif [[ $installtype == "c" ]]
+	then
+		echo -e "\n\n\t\t\t [+++] Available Functions [+++] \n"
+		AllFuncs=$(declare -F | awk '{print $NF}' | sort | egrep -v "^_")
+		for i in $AllFuncs;do echo -e "+${i}";done
+		echo -e "\n\n\t\t\t [?] Enter desired functions separated by a space"
+		read userFunctions	
+		functionsToExec=($(echo $userFunctions | sed 's/ /\n/g'))
+		for func in ${functionsToExec[@]};do
+			if [[ $(echo ${AllFuncs} | grep -w -q ${func};echo $?) == 1 ]]
+			then
+				invalid+=($func)
+			else
+				valid+=($func)
+			fi
+		done
+
+		if (( ${#invalid[@]} ))
+		then
+			echo -e "\n [!] Invalid Functions [!] "
+			for i in ${invalid[@]};do echo -e "+${i}";done
+		fi
+		if (( !${#valid[@]} ))
+		then
+			echo -e "\n\n\t\t\t [!!!] No valid functions entered...exiting"
+			exit
+		else
+			echo -e "\n\n\t\t\t [!] Chosen Functions [!] \n\n"
+			for i in ${valid[@]};do echo -e "+${i}";done
+			echo -e "\n\n\t\t\t[?] Run functions? (y/n)"
+			
+			read continue
+			if [[ $continue == 'y' ]]
+			then
+				echo -e "\n\n\t\t\t[+] Running functions...\n"
+				for func in ${valid[@]};do 
+					echo -e "--> ${func}"
+					$func
+				done
+			else
+				echo -e "\n\n\t\t\t[+] Not running.. Exiting..."
+				exit
+			fi
+		fi
+	else
+		echo -e "\n\n\t\t\t [!] Invalid input, expecting r|c, exiting..."
+	fi
 fi
+
